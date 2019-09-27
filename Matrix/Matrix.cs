@@ -29,6 +29,7 @@ namespace Matrix
         }
         public Matrix_model(ushort i,ushort j)
         {
+            this.matrix = new double[i, j];
             Dimension(i, j);
         }
         private void Dimension(ushort i,ushort j)
@@ -57,6 +58,26 @@ namespace Matrix
                 {
                     throw new Exception("Выход за границы массива ");
                 }
+            }
+            set
+            {
+                if (i<=row && j<=column)
+                {
+
+                    this.matrix[i, j] = value;
+                }
+            }
+        }
+
+        public void Show_Matrix()
+        {
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < column; j++)
+                {
+                    Console.Write(this.matrix[i, j] + "  ");
+                }
+                Console.WriteLine();
             }
         }
 
