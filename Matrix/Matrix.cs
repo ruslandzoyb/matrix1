@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Matrix
 {
-    class Matrix_model
+    class Matrix
     {
         private double[,] matrix;
         private ushort row, column;
 
-        public Matrix_model(double[,] matrix,ushort i,ushort j)
+        public Matrix(double[,] matrix,ushort i,ushort j)
         {
             if (i*j==matrix.Length )
             {
@@ -25,9 +25,13 @@ namespace Matrix
                     Console.WriteLine(ex.Message);
                 }
             }
+            else
+            {
+                throw new Exception("Несоответсвие индексов и массива");
+            }
 
         }
-        public Matrix_model(ushort i,ushort j)
+        public Matrix(ushort i,ushort j)
         {
             this.matrix = new double[i, j];
             Dimension(i, j);
@@ -38,11 +42,25 @@ namespace Matrix
             column = j;
         }
 
-        public double[,] Matrix
+        public double[,] Matr
         {
             get
             {
                 return this.matrix;
+            }
+        }
+        public ushort Row
+        {
+            get
+            {
+                return row;
+            }
+        }
+        public ushort Column
+        {
+            get
+            {
+                return column;
             }
         }
 

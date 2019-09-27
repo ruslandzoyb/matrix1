@@ -10,6 +10,10 @@ namespace Matrix
     {
         static void Main(string[] args)
         {
+            Matrix matrix = new Matrix(new[,] { { 1.0, 2, 3 }, { 4, 8, 9 } }, 2, 3);
+            matrix.Show_Matrix();
+
+            Console.ReadKey();
         }
     }
 }
