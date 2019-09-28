@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Matrix
-{
+{  [Serializable]
    public class Matrix
     {
         private double[,] matrix;
@@ -37,7 +37,7 @@ namespace Matrix
             row = i;
             column = j;
         }
-
+        
         public double[,] Matr
         {
             get
@@ -103,5 +103,10 @@ namespace Matrix
         {
             return Operations.Substraction(first, second);
         }
+        public static Matrix operator* (Matrix first,Matrix second)
+        {
+            return Operations.Multiplication(first, second);
+        }
+        
     }
 }
