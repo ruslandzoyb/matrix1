@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Matrix
 {
@@ -16,7 +12,7 @@ namespace Matrix
             Console.WriteLine();
             matrix2.Show_Matrix();
             Console.WriteLine();
-            Matrix mat = Operations.Addition(matrix, matrix2);
+            Matrix mat = matrix - matrix2;
             mat.Show_Matrix();
 
             Console.ReadKey();

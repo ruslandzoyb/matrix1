@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Matrix
 {
-    class Matrix
+   public class Matrix
     {
         private double[,] matrix;
         private ushort row, column;
@@ -99,5 +95,13 @@ namespace Matrix
             }
         }
 
+        public static Matrix operator +(Matrix first, Matrix second)
+        {
+            return Operations.Addition(first, second);
+        }
+        public static Matrix operator -(Matrix first, Matrix second)
+        {
+            return Operations.Substraction(first, second);
+        }
     }
 }
