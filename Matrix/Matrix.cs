@@ -4,58 +4,57 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 namespace Matrix
 {  [Serializable]
-   public class Matrix
+   public class Matrix: ICloneable
     {
         private double[,] matrix;
-        private ushort row, column;
-        List<Matrix> matrixs;
+        private int row, column;
+        private List<Matrix> matrixs;
 
-        public Matrix(double[,] matrix,ushort i,ushort j)
+        public Matrix(double[,] matrix)
         {
-            if (i*j==matrix.Length )
+            if (matrix == null)
             {
-                try
-                {
-                    this.matrix = matrix;
-                    Dimension(i, j);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                throw new ArgumentNullException(nameof(matrix));
+            }
+
+            else
+            {
+                this.matrix =(double[,])matrix.Clone();
+                Dimension(matrix.GetLength(0), matrix.GetLength(1));
+            }
+            
+            
+           
+
+        }
+        public Matrix(int i,int j)
+        {
+            if (i>0&&j>0)
+            {
+                this.matrix = new double[i, j];
+                Dimension(i, j);
             }
             else
             {
-                throw new Exception("Несоответсвие индексов и массива");
+                throw new Exception("Отрицательные индексы");
             }
-
+           
         }
-        public Matrix(ushort i,ushort j)
-        {
-            this.matrix = new double[i, j];
-            Dimension(i, j);
-        }
-        private void Dimension(ushort i,ushort j)
+        private void Dimension(int i,int j)
         {
             row = i;
             column = j;
         }
         
-        public double[,] Matr
-        {
-            get
-            {
-                return this.matrix;
-            }
-        }
-        public ushort Row
+       
+        public int Row
         {
             get
             {
                 return row;
             }
         }
-        public ushort Column
+        public int Column
         {
             get
             {
@@ -63,11 +62,11 @@ namespace Matrix
             }
         }
 
-        public double this[ushort i,ushort j]
+        public double this[int i,int j]
         {
             get
             {
-                if (i<=row && j<=column)
+                if ((i<=row && j<=column)||(i>0 && j>0))
                 {
                     return this.matrix[i, j];
                 }
@@ -78,7 +77,7 @@ namespace Matrix
             }
             set
             {
-                if (i<=row && j<=column)
+                if ((i <= row && j <= column) || (i > 0 && j > 0))
                 {
 
                     this.matrix[i, j] = value;
@@ -96,6 +95,7 @@ namespace Matrix
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine("");
         }
 
         
@@ -120,9 +120,9 @@ namespace Matrix
             if (first.Row == second.Row && first.Column == second.Column)
             {
                 Matrix matrix = new Matrix(first.Row, first.Column);
-                for (ushort i = 0; i < first.Row; i++)
+                for (int i = 0; i < first.Row; i++)
                 {
-                    for (ushort j = 0; j < first.Column; j++)
+                    for (int j = 0; j < first.Column; j++)
                     {
                         matrix[i, j] = first[i, j] + second[i, j];
                     }
@@ -139,9 +139,9 @@ namespace Matrix
             if (first.Row == second.Row && first.Column == second.Column)
             {
                 Matrix matrix = new Matrix(first.Row, first.Column);
-                for (ushort i = 0; i < first.Row; i++)
+                for (int i = 0; i < first.Row; i++)
                 {
-                    for (ushort j = 0; j < first.Column; j++)
+                    for (int j = 0; j < first.Column; j++)
                     {
                         matrix[i, j] = first[i, j] - second[i, j];
                     }
@@ -159,13 +159,13 @@ namespace Matrix
             if (first.Column == second.Row)
             {
                 Matrix matrix = new Matrix(first.Row, second.Column);
-                for (ushort i = 0; i < first.Row; i++)
+                for (int i = 0; i < first.Row; i++)
                 {
-                    for (ushort j = 0; j < second.Column; j++)
+                    for (int j = 0; j < second.Column; j++)
                     {
                         matrix[i, j] = 0;
 
-                        for (ushort k = 0; k < first.Column; k++)
+                        for (int k = 0; k < first.Column; k++)
                         {
                             matrix[i, j] += first[i, k] * second[k, j];
                         }
@@ -179,34 +179,31 @@ namespace Matrix
                 throw new Exception("");
             }
         }
-        public  void Save()
+        public void Serialize()
         {
-            if (this == null)
+            if (this==null)
             {
-                throw new ArgumentNullException(nameof(matrix));
+                throw new ArgumentNullException();
             }
-            Deserilize();
-            matrixs.Add(this);
+            else
+            {
+                SerializeSaver serializeSaver = new SerializeSaver();
+                List<Matrix> matrices = serializeSaver.Load<Matrix>();
+                matrices.Add(this);
+                serializeSaver.Save<Matrix>(matrices);
 
-            SerializeSaver saver = new SerializeSaver();
-            saver.Save<Matrix>(matrixs);
-            
-        
-
-
+            }
+         
         }
-        public List<Matrix> Deserilize()
+
+        public object Clone()
         {
-            SerializeSaver load = new SerializeSaver();
-
-           return matrixs = load.Load<Matrix>();
+            double[,] array =(double[,])matrix.Clone();
+            return new Matrix(array);
         }
-       
 
-        /* public object Clone()
-         {
-             return new Matrix(this.Matr, this.Row, this.Column);
-         }*/
+
+       
 
 
     }
